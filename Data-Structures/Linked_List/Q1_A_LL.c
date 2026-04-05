@@ -88,9 +88,28 @@ int main()
 
 //////////////////////////////////////////////////////////////////////////////////
 
-int insertSortedLL(LinkedList *ll, int item)
-{
-	/* add your code here */
+int insertSortedLL(LinkedList *ll, int item){
+	// 어디에 넣을지 위치를 찾는 함수 
+
+	ListNode *cur;
+	int index = 0; //삽입할 위치를 저장할 인덱스
+
+	if (ll == NULL){
+	    //연결리스트 자체가 없으면 실패
+		return -1;
+	}
+	
+
+	cur = ll->head; //첫 노드부터 비교 시작
+
+	// 앞에서부터 삽입할 위치를 찾음
+	while(cur != NULL){
+		if(item <= cur->item)
+		    break;
+		cur = cur->next;
+		index++;
+	}
+	return insertNode(ll, index, item);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -129,17 +148,20 @@ void removeAllItems(LinkedList *ll)
 
 
 ListNode *findNode(LinkedList *ll, int index){
-
+    
+    // 현재 탐색 중인 노드를 가리킬 임시 포인터
 	ListNode *temp;
-
+ 
 	if (ll == NULL || index < 0 || index >= ll->size)
 		return NULL;
 
+	// temp가 첫 번째 노드(head)를 가리키도록 설정
 	temp = ll->head;
 
 	if (temp == NULL || index < 0)
 		return NULL;
 
+    // index번째 노드에 도달할 때까지 다음 노드로 한 칸씩 이동 
 	while (index > 0){
 		temp = temp->next;
 		if (temp == NULL)
