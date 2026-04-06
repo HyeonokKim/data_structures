@@ -86,8 +86,39 @@ int main()
 
 void moveEvenItemsToBack(LinkedList *ll)
 {
-	/* add your code here */
+	// cur: 현재 노드, next: 다음 노드를 임시 저장
+    // oddH, oddT: 홀수 리스트의 시작과 끝
+    // evenH, evenT: 짝수 리스트의 시작과 끝
+	ListNode *cur, *next, *oddH = NULL, *oddT = NULL, *evenH = NULL, *evenT = NULL;
+
+	//연결리스트가 없거나 비어 있으면 종료
+	if (ll == NULL || ll->head == NULL) return;
+
+	// 원래 리스트를 한 번 순회하면서 짝수와 홀수 분리
+	for (cur = ll->head; cur != NULL; cur = next){
+		next = cur->next; //다음 노드 미리 저장
+		cur->next = NULL; //현재 노드를 기존 연결에서 분리
+
+		// 현재 노드가 홀수이면 홀수 리스트 뒤에 붙임
+        if(cur->item%2){
+			if(oddH == NULL) oddH = oddT = cur;  //첫 홀수 노드인 경우
+			else oddT = oddT->next = cur;        //기존 홀수 리스트 뒤에 연결
+		} else {
+			if(evenH == NULL) evenH = evenT = cur; //첫 짝수 노드인 경우
+			else evenT = evenT->next = cur;        //기존 짝수 리스트 뒤에 연결
+		}
+	}
+
+	//홀수 노드가 하나도 없으면 head를 짝수 리스트로 설정
+	if (oddH == NULL) ll->head = evenH;
+	else{
+		oddT->next = evenH; //홀수 리스트 뒤에 짝수 리스트 연결
+		ll->head = oddH;    //head를 홀수 리스트 시작으로 변경
+	}
 }
+
+
+
 
 ///////////////////////////////////////////////////////////////////////////////////
 
