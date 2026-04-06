@@ -86,8 +86,63 @@ int main()
 
 void moveOddItemsToBack(LinkedList *ll)
 {
-	/* add your code here */
+	// 홀수를 뒤로 보내는 함수
+	// 포인터 설정
+	ListNode *cur, *prev, *tail, *next, *firstMoved;
+
+	// 연결리스트 자체가 없거나 첫 노드가 없으면 함수 종료
+	if (ll == NULL || ll -> head == NULL){
+		return;
+	}
+
+	cur = ll -> head;  //현재 보고 있는 노드
+	prev = NULL;       //현재 노드의 이전 노드
+	tail = ll -> head; //마지막 노드를 찾기 위해 head부터 시작
+	firstMoved = NULL; //처음 뒤로 보낸 홀수 노드를 저장할 포인터
+
+	// 현재 리스트의 마지막 노드 찾기
+	while (tail->next != NULL){
+		tail = tail->next;
+		}
+
+	cur = ll->head; //실제 순회를 위해 cur을 다시 head로 설정
+
+
+	// 현재 노드가 없을 때까지 그리고 처음 뒤로 보낸 홀수를 다시 만날 때까지 반복
+	while (cur != NULL && cur != firstMoved){
+		next = cur -> next; //현재 노드의 다음 노드를 미리 저장
+
+		//현재 노드 값이 홀수인 경우
+		if (cur->item%2 != 0){
+			// 현재 노드가 마지막 노드이고 아무 홀수도 옮기지 않았다면 처리할 필요 없음
+			if (cur == tail && firstMoved == NULL){
+				break;
+			}
+			//처음부터 뒤로 보낸 홀수 노드라면 따로 저장
+			if (firstMoved == NULL){
+				firstMoved = cur;
+			}
+			//현재 노드가 head라면 head를 다음 노드로 변경
+			if (cur == ll ->head){
+				ll->head = next;
+			} else{
+				//head가 아닌 경우 이전 노드가 현재 노드를 건너뛰도록 연결 변경
+				prev->next = next;
+			}
+			//현재 홀수 노드를 맨 뒤에 연결
+			tail->next = cur;
+			cur->next = NULL;
+			tail = cur; //새로 붙인 노드가 마지막 노드가 됨
+
+			cur = next; 
+		} else{
+			prev = cur;
+			cur = next;
+		}
+	}
 }
+
+
 
 ///////////////////////////////////////////////////////////////////////////////////
 
